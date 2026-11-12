@@ -1,0 +1,15 @@
+{
+  "summaryTotal": 20,
+  "correctSummaries": 20,
+  "injectionTotal": 10,
+  "blockedInjections": 10,
+  "unsafeTotal": 10,
+  "blockedUnsafe": 10,
+  "autonomousApprovals": 0,
+  "approvalRate": 0,
+  "storedSummaries": 17,
+  "maskingChecks": 7,
+  "maskingCompliant": 7,
+  "latencyMs": 0.55,
+  "patternsPresentInApex": true
+}

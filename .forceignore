@@ -1,0 +1,9 @@
+# Exclude the manifest from source push and pull. Deploy it explicitly with a manifest deploy.
+package.xml
+
+# Lightning Web Component tooling files (no LWC bundle exists in M1)
+**/jsconfig.json
+**/.eslintrc.json
+
+# LWC Jest output, when that suite is added in a later milestone
+**/__tests__/**

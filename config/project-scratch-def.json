@@ -1,0 +1,12 @@
+{
+  "orgName": "ServiceGenie",
+  "edition": "Developer",
+  "language": "en_US",
+  "hasSampleData": false,
+  "features": ["ServiceCloud"],
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    }
+  }
+}

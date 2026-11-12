@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  background: #07111f;
+  color: #e7eef8;
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: rgba(27, 150, 255, 0.35);
+  color: white;
+}
+
+.atmosphere {
+  background-image:
+    radial-gradient(ellipse 70% 45% at 8% -10%, rgba(27, 150, 255, 0.22), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 0%, rgba(139, 124, 255, 0.18), transparent 50%),
+    radial-gradient(ellipse 40% 30% at 70% 110%, rgba(45, 212, 191, 0.1), transparent 45%),
+    linear-gradient(180deg, #081424 0%, #07111f 40%, #08131f 100%);
+}
+
+.mesh {
+  background-image:
+    linear-gradient(rgba(148, 184, 220, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 184, 220, 0.06) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse at 50% 20%, black 20%, transparent 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

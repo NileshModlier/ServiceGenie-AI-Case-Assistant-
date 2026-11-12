@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Source_Lead__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Lead that produced this case. Delete is restricted so the link cannot be removed by deleting the lead.</description>
+    <label>Source Lead</label>
+    <referenceTo>Lead</referenceTo>
+    <relationshipLabel>Cases</relationshipLabel>
+    <relationshipName>Cases</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

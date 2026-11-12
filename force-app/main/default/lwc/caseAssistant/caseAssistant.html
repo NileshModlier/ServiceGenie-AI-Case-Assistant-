@@ -1,0 +1,140 @@
+<template>
+    <lightning-card title="Case Assistant" icon-name="standard:case">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <template lwc:if={isLoading}>
+                <div data-state="loading">
+                    <lightning-spinner alternative-text="Loading case" size="small"></lightning-spinner>
+                </div>
+            </template>
+            <template lwc:elseif={isEmpty}>
+                <p data-state="empty">Open a case to see the assistant.</p>
+            </template>
+            <template lwc:elseif={isError}>
+                <p class="slds-text-color_error" data-state="error" role="alert">{errorMessage}</p>
+            </template>
+            <template lwc:else>
+                <article data-state="success">
+                    <header class="slds-m-bottom_medium">
+                        <p class="slds-text-title_caps">Header</p>
+                        <h2 class="slds-text-heading_medium" data-field="case-number">{caseNumber}</h2>
+                        <p data-field="subject">{subject}</p>
+                    </header>
+
+                    <dl class="slds-list_horizontal slds-wrap slds-m-bottom_medium">
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Case age</dt>
+                        <dd class="slds-item_detail slds-truncate" data-field="case-age">{caseAge}</dd>
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Priority</dt>
+                        <dd class="slds-item_detail slds-truncate" data-field="priority">{priority}</dd>
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Status</dt>
+                        <dd class="slds-item_detail slds-truncate" data-field="status">{status}</dd>
+                    </dl>
+
+                    <section class="slds-m-bottom_medium">
+                        <h3 class="slds-text-heading_small">Customer</h3>
+                        <p data-field="customer">{customerName}</p>
+                        <template lwc:if={customerEmail}>
+                            <p data-field="email">{customerEmail}</p>
+                        </template>
+                        <p data-field="account">{accountName}</p>
+                    </section>
+
+                    <section class="slds-m-bottom_medium">
+                        <h3 class="slds-text-heading_small">History</h3>
+                        <p data-field="history">{activitySummary}</p>
+                    </section>
+
+                    <section class="slds-m-bottom_medium">
+                        <h3 class="slds-text-heading_small">Recent cases</h3>
+                        <template lwc:if={hasRecentCases}>
+                            <ul>
+                                <template for:each={recentCases} for:item="item">
+                                    <li key={item.Id} data-recent={item.Id}>
+                                        {item.CaseNumber} — {item.Subject} — {item.Status}
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                        <template lwc:else>
+                            <p>No other recent cases.</p>
+                        </template>
+                    </section>
+
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <section class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-m-bottom_medium">
+                            <h3 class="slds-text-heading_small">Agent workspace</h3>
+                            <p class="slds-m-bottom_small">Review the case, then refresh the context. Nothing on this page sends a message.</p>
+                            <lightning-button
+                                label="Refresh context"
+                                data-action="refresh"
+                                onclick={handleRefresh}
+                                disabled={isRefreshDisabled}
+                            ></lightning-button>
+                        </section>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <section class="slds-box slds-m-bottom_small" data-card="draft">
+                                <h3 class="slds-text-heading_small">AI draft</h3>
+                                <p class="slds-m-bottom_small">Generate a draft, then approve or reject it. Nothing on this card sends a message.</p>
+                                <template lwc:if={draftError}>
+                                    <p class="slds-text-color_error" data-field="draft-error" role="alert">{draftError}</p>
+                                </template>
+                                <template lwc:if={hasDraft}>
+                                    <p data-field="draft-status">{draftStatus}</p>
+                                    <p data-field="original-draft">{originalDraft}</p>
+                                    <template lwc:if={isDecisionReady}>
+                                        <lightning-textarea
+                                            label="Edited draft"
+                                            data-field="edited-draft"
+                                            value={editedBody}
+                                            onchange={handleEditedChange}
+                                        ></lightning-textarea>
+                                        <div class="slds-m-top_small">
+                                            <lightning-button label="Approve draft" data-action="approve" onclick={handleApprove}></lightning-button>
+                                            <lightning-button label="Reject draft" data-action="reject" onclick={handleReject} class="slds-m-left_x-small"></lightning-button>
+                                        </div>
+                                    </template>
+                                    <template lwc:else>
+                                        <p data-field="edited-draft">{editedBody}</p>
+                                    </template>
+                                </template>
+                                <template lwc:else>
+                                    <p data-field="draft-empty">No draft yet.</p>
+                                </template>
+                                <div class="slds-m-top_small">
+                                    <lightning-button
+                                        label="Generate draft"
+                                        data-action="draft"
+                                        onclick={handleGenerate}
+                                        disabled={isGenerateDisabled}
+                                    ></lightning-button>
+                                </div>
+                            </section>
+                            <section class="slds-box" data-card="next">
+                                <h3 class="slds-text-heading_small">Next best actions</h3>
+                                <p data-field="rule-name">{ruleName}</p>
+                                <p data-field="reason">{reason}</p>
+                                <p data-field="action">{actionText}</p>
+                                <p class="slds-m-top_small">This is a recommendation. It does not change the case or send a message.</p>
+                                <h3 class="slds-text-heading_small slds-m-top_medium">Summary</h3>
+                                <p data-field="summary">{summaryText}</p>
+                                <template lwc:if={summaryModel}>
+                                    <p data-field="summary-model">{summaryModel}</p>
+                                </template>
+                                <template lwc:if={summaryNotice}>
+                                    <p data-field="summary-notice">{summaryNotice}</p>
+                                </template>
+                                <div class="slds-m-top_small">
+                                    <lightning-button
+                                        label="Queue summary"
+                                        data-action="summary"
+                                        onclick={handleQueueSummary}
+                                        disabled={isSummaryDisabled}
+                                    ></lightning-button>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </article>
+            </template>
+        </div>
+    </lightning-card>
+</template>

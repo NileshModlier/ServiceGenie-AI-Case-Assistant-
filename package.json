@@ -1,0 +1,12 @@
+{
+  "name": "servicegenie",
+  "private": true,
+  "description": "Jest tests for the ServiceGenie case assistant. No Salesforce credentials are stored here.",
+  "scripts": {
+    "test:unit": "sfdx-lwc-jest",
+    "test:unit:coverage": "sfdx-lwc-jest --coverage"
+  },
+  "devDependencies": {
+    "@salesforce/sfdx-lwc-jest": "^7.1.0"
+  }
+}

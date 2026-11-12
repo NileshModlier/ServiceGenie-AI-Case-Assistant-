@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Decision_Requires_Approver</fullName>
+    <active>true</active>
+    <description>Approved and Rejected drafts must record who decided and when.</description>
+    <errorConditionFormula>AND(
+  OR(ISPICKVAL(Status__c, "Approved"), ISPICKVAL(Status__c, "Rejected")),
+  OR(ISBLANK(Approved_By__c), ISBLANK(Approved_At__c))
+)</errorConditionFormula>
+    <errorDisplayField>Status__c</errorDisplayField>
+    <errorMessage>An approver and a time are required to approve or reject a draft.</errorMessage>
+</ValidationRule>

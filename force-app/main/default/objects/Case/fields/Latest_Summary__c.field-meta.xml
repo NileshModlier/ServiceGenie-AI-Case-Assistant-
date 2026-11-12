@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Latest_Summary__c</fullName>
+    <description>Latest background summary. It is information for an agent and is not a decision.</description>
+    <label>Latest Summary</label>
+    <length>32768</length>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>
